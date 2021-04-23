@@ -20,7 +20,52 @@ namespace Ntpvize
             InitializeComponent();
         }
 
+        void veriguncelle()
+        {
+            XmlTextReader xmloku;
+            int i = 0;
+            bool item = false;
+            while (true)
+            {
+                xmloku = new XmlTextReader("https://www.webtekno.com/rss.xml");
+                i = 0;
+                item = false;
+                while (xmloku.Read())
+                {
 
+                    if (xmloku.Name == "item")
+                    {
+                        item = true;
+                    }
+                    if (item == false)
+                    {
+                        continue;
+                    }
+                    i++;
+                    if (xmloku.Name == "id")
+                    {
+
+                        if (i == 3)
+                        {
+                            
+                            
+                            if (Convert.ToInt32(xmloku.ReadString()) != enguncelveriid)
+                            {
+                                listBox1.Items.Clear();
+                                verileriyaz();
+                                Thread.Sleep(20000);
+                            }
+                            else
+                            {
+                                Thread.Sleep(1000);
+                                
+                            }
+                        }
+                    }
+                }
+                Thread.Sleep(20000);
+            }
+        }
 
         int enguncelveriid = 0;
         void verileriyaz()
@@ -30,7 +75,7 @@ namespace Ntpvize
             string veriler = "";
             bool item = false;
             int i = 0;
-            
+            int calis = 0;
             while (xmloku.Read())
             {
                 if (xmloku.Name == "item")
@@ -64,7 +109,12 @@ namespace Ntpvize
                 listBox1.Items.Add(veriler);
                 veriler = "";
             }
-        
+            calis++;
+            if (calis == 1)
+            {
+                veriguncelle();
+            }
+
         }
      
 
@@ -72,7 +122,10 @@ namespace Ntpvize
         {
             verileriyaz();
         }
-    
-     
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
