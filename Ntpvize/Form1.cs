@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Timers;
 using System.Xml;
 using System.Threading;
+using System.IO;
 
 namespace Ntpvize
 {
@@ -19,6 +20,20 @@ namespace Ntpvize
         {
             InitializeComponent();
         }
+        void veriekle(string veri)
+        {
+            string dosya_yolu = "veriler.txt";
+            StreamReader sr = new StreamReader(dosya_yolu);
+            string eskiveri = sr.ReadToEnd();
+            sr.Close();
+            FileStream fs = new FileStream(dosya_yolu, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            StreamWriter sw = new StreamWriter(fs);
+            sw.Write(eskiveri + veri);
+            sw.Flush();
+            sw.Close();
+            fs.Close();
+        }
+
 
         void veriguncelle()
         {
@@ -106,6 +121,7 @@ namespace Ntpvize
                 {
                     veriler += xmloku.ReadString() + Environment.NewLine;
                 }
+                veriekle(veriler);
                 listBox1.Items.Add(veriler);
                 veriler = "";
             }
