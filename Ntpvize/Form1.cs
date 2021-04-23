@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Timers;
 using System.Xml;
 namespace Ntpvize
 {
@@ -16,18 +17,36 @@ namespace Ntpvize
         {
             InitializeComponent();
         }
+   
 
         private void button1_Click(object sender, EventArgs e)
         {
+           
             XmlTextReader xmloku = new XmlTextReader("https://www.webtekno.com/rss.xml");
+            
             while (xmloku.Read())
             {
+               
+
+                if (xmloku.Name == "id")
+                {
+                    listBox1.Items.Add(xmloku.ReadString());
+                }
                 if (xmloku.Name == "title")
                 {
                     listBox1.Items.Add(xmloku.ReadString());
                 }
-           
+                if (xmloku.Name == "description")
+                {
+                    listBox1.Items.Add(xmloku.ReadString());
+                }
+
+
+
+
             }
         }
+    
+     
     }
 }
