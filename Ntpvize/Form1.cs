@@ -20,9 +20,26 @@ namespace Ntpvize
         {
             InitializeComponent();
         }
+        string yol = @"veriler.txt";
+        void dosyayenile() // yeni veri geldiğinde eski veriler temizlenip yenileri alındı
+        {
+            if (System.IO.File.Exists(yol))
+            {
+                {
+                    System.IO.File.Delete(yol);
+                    FileStream fs = new FileStream(yol, FileMode.Create, FileAccess.ReadWrite);
+                    fs.Close();
+                }
+            }
+            else
+            {
+                FileStream fs = new FileStream(yol, FileMode.Create, FileAccess.ReadWrite);
+                fs.Close();
+            }
+        }
         void veriekle(string veri)
         {
-            string dosya_yolu = "veriler.txt";
+            string dosya_yolu = yol;
             StreamReader sr = new StreamReader(dosya_yolu);
             string eskiveri = sr.ReadToEnd();
             sr.Close();
@@ -141,7 +158,7 @@ namespace Ntpvize
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            dosyayenile();
         }
     }
 }
