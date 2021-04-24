@@ -93,7 +93,8 @@ namespace Ntpvize
                             {
                                 uyarisesi();
                                 listBox1.Items.Clear();
-                                verileriyaz();
+                                thread1 = new Thread(verileriyaz);
+                                thread1.Start();
                                 Thread.Sleep(20000);
                             }
                             else
@@ -134,13 +135,10 @@ namespace Ntpvize
                     {
                         enguncelveriid = Convert.ToInt32(xmloku.ReadString());
                     }
-
                     veriler += xmloku.ReadString() + Environment.NewLine;
                 }
                 if (xmloku.Name == "title")
                 { 
-
-                   
                     veriler += xmloku.ReadString() + Environment.NewLine;
                 }
                 if (xmloku.Name == "description")
@@ -148,21 +146,37 @@ namespace Ntpvize
                     veriler += xmloku.ReadString() + Environment.NewLine;
                 }
                 veriekle(veriler);
-                listBox1.Items.Add(veriler);
+             //   listBox1.Items.Add(veriler); //Thread Kullandığımız için formla etkileşime giremedik
                 veriler = "";
             }
             calis++;
             if (calis == 1)
             {
-                veriguncelle();
+                thread2 = new Thread(veriguncelle);
+                thread2.Start();
             }
 
         }
      
-
+          Thread thread1,thread2;
         private void button1_Click(object sender, EventArgs e)
         {
-            verileriyaz();
+            thread1 = new Thread(verileriyaz);
+            thread1.Start();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                thread1.Abort();
+                thread2.Abort();
+            }
+            catch (Exception)
+            {
+
+              
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
