@@ -64,6 +64,10 @@ namespace Ntpvize
 
         void veriguncelle()
         {
+            this.Invoke((MethodInvoker)delegate () // thread
+            {
+                label1.Text = "Veriler Kontrol Ediliyor..";
+            });
             XmlTextReader xmloku;
             int i = 0;
             bool item = false;
@@ -91,7 +95,12 @@ namespace Ntpvize
                         {
                             if (Convert.ToInt32(xmloku.ReadString()) != enguncelveriid)
                             {
+                                this.Invoke((MethodInvoker)delegate () // thread
+                                {
+                                    label1.Text = "Güncelleme Yapılıyor.";
+                                });
                                 uyarisesi();
+                                Thread.Sleep(2000);
                                 listBox1.Items.Clear();
                                 thread1 = new Thread(verileriyaz);
                                 thread1.Start();
@@ -112,9 +121,13 @@ namespace Ntpvize
         int enguncelveriid = 0;
         void verileriyaz()
         {
-          
+            this.Invoke((MethodInvoker)delegate () // thread
+            {
+                label1.Text = "Program Çalışıyor.";
+            });
             XmlTextReader xmloku = new XmlTextReader("https://www.webtekno.com/rss.xml");
             string veriler = "";
+            string veri = "";
             bool item = false;
             int i = 0;
             int calis = 0;
@@ -138,7 +151,12 @@ namespace Ntpvize
                     veriler += xmloku.ReadString() + Environment.NewLine;
                 }
                 if (xmloku.Name == "title")
-                { 
+                {
+                    veri = xmloku.ReadString();
+                    this.Invoke((MethodInvoker)delegate ()
+                    {
+                        listBox1.Items.Add(veri);
+                    });
                     veriler += xmloku.ReadString() + Environment.NewLine;
                 }
                 if (xmloku.Name == "description")
@@ -146,7 +164,8 @@ namespace Ntpvize
                     veriler += xmloku.ReadString() + Environment.NewLine;
                 }
                 veriekle(veriler);
-             //   listBox1.Items.Add(veriler); //Thread Kullandığımız için formla etkileşime giremedik
+                
+            
                 veriler = "";
             }
             calis++;
