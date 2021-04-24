@@ -20,6 +20,16 @@ namespace Ntpvize
         {
             InitializeComponent();
         }
+
+        void uyarisesi()
+        {
+            Console.Beep(874, 400);
+            Console.Beep(340, 400);
+            Console.Beep(274, 400);
+        }
+
+
+
         string yol = @"veriler.txt";
         void dosyayenile() // yeni veri geldiğinde eski veriler temizlenip yenileri alındı
         {
@@ -79,10 +89,9 @@ namespace Ntpvize
 
                         if (i == 3)
                         {
-                            
-                            
                             if (Convert.ToInt32(xmloku.ReadString()) != enguncelveriid)
                             {
+                                uyarisesi();
                                 listBox1.Items.Clear();
                                 verileriyaz();
                                 Thread.Sleep(20000);
